@@ -11,7 +11,7 @@ const Login = () => {
     const { mutateAsync } = useMutation({
         mutationFn: (code: string) => postApi({ endUrl: GOOGLE_AUTH_LOGIN, reqObj: { code } }),
         onSuccess: () => alert('success'),
-        onError: () => alert('An error occured...')
+        onError: () => alert('An error occured.d..')
     })
 
     // hook
