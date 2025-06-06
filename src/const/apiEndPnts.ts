@@ -1,10 +1,7 @@
 export const LOGIN_API_END_POINT = '/auth/login'
-export const REGISTER_API_END_POINT = '/auth/register'
-export const FORGOT_PASS_API_END_POINT = '/auth/passwordReset'
-export const COMPLETE_REGISTER_API_END_POINT = '/auth/completeRegister'
-export const PASS_CONFIRM_API_END_POINT = '/auth/passwordConfirm'
 export const GET_ME_API_END_POINT = '/auth/me'
 export const GOOGLE_AUTH_LOGIN = '/auth/login/google'
+export const LOGOUT_API_END_POINT = '/auth/logout'
 
 export const GET = 'GET'
 export const POST = 'POST'

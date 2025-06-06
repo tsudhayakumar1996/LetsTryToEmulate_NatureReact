@@ -20,9 +20,9 @@ function App() {
                 <GoogleOAuthProvider
                     onScriptLoadError={() =>
                         // eslint-disable-next-line no-console
-                        console.log('Loading error occured...')
+                        console.log('Google OAuth Loading error occured...')
                     }
-                    clientId="296348523864-sb58acbobvjp2u76tdaeu5r3jjn4da57.apps.googleusercontent.com"
+                    clientId={import.meta.env.VITE_OAUTH_CLIENT_ID}
                 >
                     <RouterProvider router={router} />
                 </GoogleOAuthProvider>

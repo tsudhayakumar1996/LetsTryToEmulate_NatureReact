@@ -1,144 +1,69 @@
 import { useRef } from 'react'
 
-import { Box, Grid } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { motion, useScroll, useTransform } from 'motion/react'
 
-import CmnButton from '@/commonComponents/cmnButton'
+import { LOGOUT_API_END_POINT } from '@/const/apiEndPnts'
+import { ME } from '@/const/query'
+import { LOGIN_UI_ROUTE } from '@/const/uiRoute'
+import { postApi } from '@/fetch'
+import TxtWthBtn from '@/pages/home/components/txtWthBtn'
+import { CJProps, contentJson } from '@/pages/home/const/contentJson'
 import { ChildrenProp } from '@/types/common'
+import { enqueSnackBarError } from '@/utils/helper'
+import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
 
-const TypeWritter = ({ text }: { text: string }) => {
-    // const
-    const LETTER_DELAY = 0.025
-    const BOX_FADE_DURATION = 0.125
-
-    return (
-        <Box sx={{ maxWidth: '600px', margin: { sm: 'auto' } }}>
-            {text.split('').map((l, idx) => (
-                <Box
-                    component={'span'}
-                    sx={{ position: 'relative' }}
-                    key={idx}
-                >
-                    <Box
-                        component={motion.span}
-                        initial={{
-                            opacity: 0
-                        }}
-                        animate={{
-                            opacity: 1
-                        }}
-                        transition={{
-                            delay: idx * LETTER_DELAY,
-                            duration: 0
-                        }}
-                    >
-                        {l}
-                    </Box>
-                    <Box
-                        component={motion.span}
-                        initial={{
-                            opacity: 0
-                        }}
-                        animate={{
-                            opacity: [0, 1, 0]
-                        }}
-                        transition={{
-                            delay: idx * LETTER_DELAY,
-                            times: [0, 0.1, 1],
-                            duration: BOX_FADE_DURATION,
-                            ease: 'easeInOut'
-                        }}
-                        sx={{ position: 'absolute', inset: 0, backgroundColor: '#000' }}
-                    />
-                </Box>
-            ))}
-        </Box>
-    )
-}
-
-const TxtWthBtn = () => {
+const ParrlxContnt = () => {
+    // ref
+    const itemsRef: any = useRef([])
     // hook
     const navigate = useNavigate()
-    return (
-        <Grid
-            container
-            sx={{ zIndex: 0 }}
-            spacing={6}
-            px={2}
-            py={6}
-        >
-            <Grid
-                size={{ xs: 12, md: 6 }}
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-            >
-                <h1>Hello there...</h1>
-                <CmnButton
-                    disabled={false}
-                    sx={{ mb: 2 }}
-                    title={'Submit'}
-                    type="button"
-                    variant="outlined"
-                    onClick={() => navigate('/auth/login')}
-                />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-                <TypeWritter
-                    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-          rhoncus quam"
-                />
-            </Grid>
-        </Grid>
-    )
-}
 
-const ParrlxContnt = () => {
+    // query
+    const queryClient = useQueryClient()
+
+    const scrollHandler = (cJ: CJProps) => {
+        if (cJ.actionFor === 'redirect') {
+            navigate(cJ.redirectURL)
+        } else if (cJ.actionFor === 'scroll') {
+            itemsRef.current[cJ.scrollIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            })
+        }
+    }
+
+    const logoutHndlr = async () => {
+        try {
+            await postApi({ endUrl: LOGOUT_API_END_POINT, reqObj: {} })
+            queryClient.setQueryData([ME], () => null)
+            navigate(LOGIN_UI_ROUTE)
+        } catch (error) {
+            enqueSnackBarError(error as Error)
+        }
+    }
+
     return (
         <>
-            <TxtImgParrlxContnt
-                height="85vh"
-                img="https://images.pexels.com/photos/1251026/pexels-photo-1251026.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                subHead="We can do onething to nature! planting more trees!!"
-                head="Planting"
-            >
-                <TxtWthBtn />
-            </TxtImgParrlxContnt>
-            <TxtImgParrlxContnt
-                height="85vh"
-                img="https://images.pexels.com/photos/1151418/pexels-photo-1151418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                subHead="Our job here is to continuously take care of those"
-                head="Growing"
-            >
-                <TxtWthBtn />
-            </TxtImgParrlxContnt>
-            <TxtImgParrlxContnt
-                height="85vh"
-                img="https://images.pexels.com/photos/142497/pexels-photo-142497.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                subHead="One day under good care it will be grown like a tree"
-                head="Grown"
-            >
-                <TxtWthBtn />
-            </TxtImgParrlxContnt>
-            <TxtImgParrlxContnt
-                height="100vh"
-                img="https://images.pexels.com/photos/113338/pexels-photo-113338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                subHead="Eventhough this is a little impact to nature"
-                head="Our impact"
-            >
-                <TxtWthBtn />
-            </TxtImgParrlxContnt>
+            <Button onClick={logoutHndlr}>Logout</Button>
+            {contentJson.map((cJ, idx) => (
+                <TxtImgParrlxContnt
+                    key={idx}
+                    height="85vh"
+                    img={cJ.img}
+                    subHead={cJ.subHead}
+                    head={cJ.head}
+                    ref={(el: never) => (itemsRef.current[idx] = el)}
+                >
+                    <TxtWthBtn
+                        actionHead={cJ.actionHead}
+                        actionBtnLabel={cJ.actionBtnLabel}
+                        typeWrtrCntnt={cJ.typeWrtrCntnt}
+                        scrollHandler={() => scrollHandler(cJ)}
+                    />
+                </TxtImgParrlxContnt>
+            ))}
         </>
     )
 }
@@ -148,29 +73,26 @@ const TxtImgParrlxContnt = ({
     subHead,
     head,
     children,
-    height
+    height,
+    ref
 }: {
     img: string
     subHead: string
     head: string
     height: string
+    ref: any
 } & ChildrenProp) => {
     return (
-        <div>
-            <Box
-                // component={motion.div}
-                // initial={{ opacity: 0 }}
-                // animate={{ opacity: 1 }}
-                // transition={{ duration: 1 }}
-                sx={{ position: 'relative', minHeight: height }}
-            >
-                <StickyImage img={img}>{children}</StickyImage>
-                <OverlayTxt
-                    head={head}
-                    subHead={subHead}
-                />
-            </Box>
-        </div>
+        <Box
+            sx={{ position: 'relative', minHeight: height }}
+            ref={ref}
+        >
+            <StickyImage img={img}>{children}</StickyImage>
+            <OverlayTxt
+                head={head}
+                subHead={subHead}
+            />
+        </Box>
     )
 }
 
@@ -217,8 +139,9 @@ const StickyImage = ({ img, children }: { img: string } & ChildrenProp) => {
         offset: ['start start', 'end start']
     })
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85])
-    const opacity = useTransform(scrollYProgress, [0, 1], [0, 1])
+    const opacity = useTransform(scrollYProgress, [0, 1], [0.4, 1.1])
     const invertOpac = useTransform(scrollYProgress, [1, 0], [-4, 1])
+    const borderRadius = '0px 0px 32px 0px'
 
     return (
         <>
@@ -234,7 +157,7 @@ const StickyImage = ({ img, children }: { img: string } & ChildrenProp) => {
                     top: 0,
                     position: 'sticky',
                     zIndex: 1,
-                    borderEndEndRadius: '16px'
+                    borderRadius
                 }}
                 style={{ scale }}
             >
@@ -242,7 +165,7 @@ const StickyImage = ({ img, children }: { img: string } & ChildrenProp) => {
                     component={motion.div}
                     sx={{
                         position: 'absolute',
-                        borderRadius: 4,
+                        borderRadius,
                         backgroundColor: 'black',
                         inset: 0
                     }}

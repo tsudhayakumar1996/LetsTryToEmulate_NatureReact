@@ -1,6 +1,4 @@
 import { GET, POST } from '@/const/apiEndPnts'
-import { JWT_TOKEN } from '@/const/txt'
-import { getValFromStorage } from '@/helper/localStorageApi'
 import { APIReqProp, EndUrlProp } from '@/types/common'
 
 const baseUrl = import.meta.env.VITE_API_URL
@@ -20,8 +18,7 @@ const resErrorHandler = (err: unknown) => {
 }
 
 const structHeaderObj = () => ({
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${getValFromStorage(JWT_TOKEN) ?? ''}`
+    'Content-Type': 'application/json'
 })
 
 export const getApi = async ({ endUrl }: EndUrlProp) => {
