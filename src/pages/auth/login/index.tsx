@@ -6,7 +6,6 @@ import { UserProp } from '@/types/common'
 import { Button } from '@mui/material'
 import { googleLogout, useGoogleLogin } from '@react-oauth/google'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router'
 
 const Login = () => {
     // query
@@ -19,15 +18,11 @@ const Login = () => {
         onError: () => alert('An error occured...')
     })
 
-    // hook
-    const navigate = useNavigate()
-
     // handler
     const googleLogin = useGoogleLogin({
         flow: 'auth-code',
         onSuccess: (token) => {
             mutateAsync(token.code)
-            navigate('/')
         }
     })
     return (

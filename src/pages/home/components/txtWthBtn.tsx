@@ -1,4 +1,5 @@
 import CmnButton from '@/commonComponents/cmnButton'
+import { HeaderOneVarientTypo, PVarientTypo } from '@/typography'
 import { Grid } from '@mui/material'
 
 const TxtWthBtn = ({
@@ -12,8 +13,6 @@ const TxtWthBtn = ({
     typeWrtrCntnt: string
     scrollHandler: () => void
 }) => {
-    // hook
-    // const navigate = useNavigate()
     return (
         <Grid
             container
@@ -28,7 +27,7 @@ const TxtWthBtn = ({
                 flexDirection="column"
                 alignItems="center"
             >
-                <h1>{actionHead}</h1>
+                <HeaderOneVarientTypo text={actionHead} />
                 <CmnButton
                     disabled={false}
                     sx={{ mb: 2 }}
@@ -39,8 +38,10 @@ const TxtWthBtn = ({
                 />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-                {/* <TypeWritter text={typeWrtrCntnt} /> */}
-                <p style={{ margin: 0, textAlign: 'center' }}>{typeWrtrCntnt}</p>
+                <PVarientTypo
+                    text={typeWrtrCntnt}
+                    sxOverrides={{ m: 0, textAlign: 'center' }}
+                />
             </Grid>
         </Grid>
     )

@@ -7,6 +7,7 @@ import {
     CARING_ROUTE,
     HOME_UI_ROUTE,
     LOGIN_UI_ROUTE,
+    MAP,
     SUGGEST_PLACE_ROUTE,
     SUPPORT_ROUTE
 } from '@/const/uiRoute'
@@ -21,6 +22,7 @@ const AthFrmsContnr = lazy(() => import('@/pages/auth/components/athFrmsContnr')
 const SuggestPlace = lazy(() => import('@/pages/suggestPlace'))
 const SupportPage = lazy(() => import('@/pages/supportPage'))
 const CaryingPage = lazy(() => import('@/pages/caryingPage'))
+const MapView = lazy(() => import('@/commonComponents/mapView'))
 
 const router = createBrowserRouter([
     {
@@ -43,12 +45,18 @@ const router = createBrowserRouter([
                 ]
             },
             {
-                path: SUGGEST_PLACE_ROUTE,
-                Component: SuggestPlace
-            },
-            {
-                path: CARING_ROUTE,
-                Component: CaryingPage
+                path: MAP,
+                Component: MapView,
+                children: [
+                    {
+                        path: SUGGEST_PLACE_ROUTE,
+                        Component: SuggestPlace
+                    },
+                    {
+                        path: CARING_ROUTE,
+                        Component: CaryingPage
+                    }
+                ]
             },
             {
                 path: SUPPORT_ROUTE,

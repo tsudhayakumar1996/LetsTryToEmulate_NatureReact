@@ -14,3 +14,15 @@ export type APIReqProp = { reqObj: Record<string, any> }
 export type ToProp = { to: string }
 export type AuthFormForProp = { formFor: typeof COMPLETE_REGISTER | typeof PASS_CONFIRM }
 export type FormFieldExtDisabledProp = { disabled?: boolean }
+
+export type LocationType = {
+    lat: LocationEntityProp
+    lng: LocationEntityProp
+}
+
+type LocationEntityProp = null | number
+
+export type TypoProp = {
+    text: string
+    sxOverrides?: SxProps
+}

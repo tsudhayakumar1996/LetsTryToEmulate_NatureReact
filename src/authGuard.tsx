@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import VertCentCircPrgs from '@/commonComponents/vertCentCircPrgs'
 import { GET_ME_API_END_POINT } from '@/const/apiEndPnts'
 import { FOUNT_ANOTHER_SESS_OR_UN_AUTHORIZED, UN_AUTHORIZED } from '@/const/msg'
 import { ME } from '@/const/query'
-import { AUTH_UI_ROUTES, HOME_UI_ROUTE, LOGIN_UI_ROUTE } from '@/const/uiRoute'
+import { AUTH_UI_ROUTES, HOME_UI_ROUTE, LOGIN_UI_ROUTE, PROTECTED_ROUTES } from '@/const/uiRoute'
 import { getApi } from '@/fetch'
 import { ChildrenProp } from '@/types/common'
 import { enqueSnackBarError } from '@/utils/helper'
@@ -19,6 +19,8 @@ const AuthGuard = ({ children }: ChildrenProp) => {
     // hook
     const navigate = useNavigate()
     const { pathname } = useLocation()
+    const [searchParams] = useSearchParams()
+    const returnTo = searchParams.get('returnTo')
 
     // query
     const { data: user } = useQuery({
@@ -44,24 +46,24 @@ const AuthGuard = ({ children }: ChildrenProp) => {
                 JSON.parse(err.message).message === UN_AUTHORIZED ||
                 JSON.parse(err.message).message === FOUNT_ANOTHER_SESS_OR_UN_AUTHORIZED
             ) {
-                navigate(LOGIN_UI_ROUTE, { replace: true })
+                navigate(`${LOGIN_UI_ROUTE}?returnTo=${pathname}`, { replace: true })
                 queryClient.setQueryData([ME], () => null)
             }
             enqueSnackBarError(err)
         }
     })
 
-    const checkForMe = !AUTH_UI_ROUTES.includes(pathname) && !user
+    const checkForMe = PROTECTED_ROUTES.includes(pathname) && !user
     const usrInAthPgeAftrLgn = AUTH_UI_ROUTES.includes(pathname) && user
 
     // effect
     useEffect(() => {
         if (isUserInLandPage) return
-        if (usrInAthPgeAftrLgn) navigate(HOME_UI_ROUTE, { replace: true })
+        if (usrInAthPgeAftrLgn) navigate(returnTo ?? HOME_UI_ROUTE, { replace: true })
         if (checkForMe) {
             mutate()
         }
-    }, [navigate, mutate, checkForMe, isUserInLandPage, usrInAthPgeAftrLgn])
+    }, [navigate, mutate, checkForMe, isUserInLandPage, usrInAthPgeAftrLgn, returnTo])
 
     if (isPending) return <VertCentCircPrgs />
 

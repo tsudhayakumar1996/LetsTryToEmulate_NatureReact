@@ -1,5 +1,7 @@
+import AnimatePageLayout from '@/animatePageLayout'
+
 const CaryingPage = () => {
-    return <div>CaryingPage</div>
+    return <AnimatePageLayout>CaryingPage</AnimatePageLayout>
 }
 
 export default CaryingPage

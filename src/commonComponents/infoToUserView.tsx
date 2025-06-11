@@ -1,10 +1,10 @@
 import { ERROR_VARIANT_MODAL, INFO_VARIANT_MODAL, SUCCESS_VARIANT_MODAL } from '@/const/infoModalConsts'
 import useInfoToUserViewMethods, { InfoModalType } from '@/queryClientMethods/useInfoToUserViewMethods'
 import { ChildrenProp } from '@/types/common'
+import { HeaderOneVarientTypo } from '@/typography'
 import { Box, useTheme } from '@mui/material'
 import { animate, AnimatePresence, motion, useIsPresent, useMotionValue } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import Hdr3VarntTypo from './hdr3VarntTypo'
 import WdthContnr from './wdthContnr'
 
 export default function InfoToUserView({ children }: ChildrenProp) {
@@ -304,9 +304,9 @@ function ImmersiveOverlay({
                         originY: 0
                     }}
                 >
-                    <Hdr3VarntTypo
+                    <HeaderOneVarientTypo
                         text={infoModalState.msg}
-                        sx={{ color: '#000', fontSize: '40px', textAlign: 'center' }}
+                        sxOverrides={{ color: '#000', fontSize: '40px', textAlign: 'center' }}
                     />
                 </Box>
             </Box>

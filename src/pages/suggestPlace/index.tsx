@@ -1,5 +1,5 @@
 const SuggestPlace = () => {
-    return <div>SuggestPlace</div>
+    return <></>
 }
 
 export default SuggestPlace

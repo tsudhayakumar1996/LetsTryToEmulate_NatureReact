@@ -1,12 +1,15 @@
-import Hdr3VarntTypo from '@/commonComponents/hdr3VarntTypo'
+import AnimatePageLayout from '@/animatePageLayout'
 import VertCentContnr from '@/commonComponents/vertCentContnr'
 import { PAGE_NOT_FOUND } from '@/const/msg'
+import { HeaderOneVarientTypo } from '@/typography'
 
 const NotFound = () => {
     return (
-        <VertCentContnr>
-            <Hdr3VarntTypo text={PAGE_NOT_FOUND} />
-        </VertCentContnr>
+        <AnimatePageLayout>
+            <VertCentContnr>
+                <HeaderOneVarientTypo text={PAGE_NOT_FOUND} />
+            </VertCentContnr>
+        </AnimatePageLayout>
     )
 }
 

@@ -10,6 +10,7 @@ import { postApi } from '@/fetch'
 import TxtWthBtn from '@/pages/home/components/txtWthBtn'
 import { CJProps, contentJson } from '@/pages/home/const/contentJson'
 import { ChildrenProp } from '@/types/common'
+import { HeaderOneVarientTypo, PVarientTypo } from '@/typography'
 import { enqueSnackBarError } from '@/utils/helper'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
@@ -125,8 +126,14 @@ const OverlayTxt = ({ head, subHead }: { head: string; subHead: string }) => {
                 zIndex: 1
             }}
         >
-            <p style={{ margin: 0, textAlign: 'center' }}>{subHead}</p>
-            <h1 style={{ textAlign: 'center' }}>{head}</h1>
+            <PVarientTypo
+                sxOverrides={{ margin: 0, textAlign: 'center' }}
+                text={subHead}
+            />
+            <HeaderOneVarientTypo
+                sxOverrides={{ textAlign: 'center' }}
+                text={head}
+            />
         </Box>
     )
 }

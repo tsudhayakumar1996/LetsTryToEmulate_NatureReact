@@ -1,5 +1,7 @@
+import AnimatePageLayout from '@/animatePageLayout'
+
 const SupportPage = () => {
-    return <div>SupportPage</div>
+    return <AnimatePageLayout>SupportPage</AnimatePageLayout>
 }
 
 export default SupportPage

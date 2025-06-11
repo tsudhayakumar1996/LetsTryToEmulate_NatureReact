@@ -1,12 +1,15 @@
-import Hdr3VarntTypo from '@/commonComponents/hdr3VarntTypo'
+import AnimatePageLayout from '@/animatePageLayout'
 import VertCentContnr from '@/commonComponents/vertCentContnr'
 import { AN_ERROR_OCCURED } from '@/const/msg'
+import { HeaderOneVarientTypo } from '@/typography'
 
 const Error = () => {
     return (
-        <VertCentContnr>
-            <Hdr3VarntTypo text={AN_ERROR_OCCURED} />
-        </VertCentContnr>
+        <AnimatePageLayout>
+            <VertCentContnr>
+                <HeaderOneVarientTypo text={AN_ERROR_OCCURED} />
+            </VertCentContnr>
+        </AnimatePageLayout>
     )
 }
 
