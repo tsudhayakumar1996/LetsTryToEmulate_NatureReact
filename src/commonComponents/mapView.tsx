@@ -1,57 +1,37 @@
 import AnimatePageLayout from '@/animatePageLayout'
-// import VertCntrAlgnTxt from '@/commonComponents/vertCntrAlgnTxt'
-import { ME } from '@/const/query'
-// import useGetLocationHook from '@/hooks/useGetLocationHook'
-import useGetLocationHook from '@/hooks/useGetLocationHook'
+import VertCntrAlgnTxt from '@/commonComponents/vertCntrAlgnTxt'
+import { AN_ERROR_OCCURED } from '@/const/msg'
+import useGetmapAction from '@/queryClientMethods/useGetmapAction'
+import { useQueryMe } from '@/queryClientMethods/useQueryMe'
+import useQueryMap from '@/queryClientMethods/useQuerySuggestPlace'
 import { Box } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { mappls } from 'mappls-web-maps'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router'
-import VertCntrAlgnTxt from './vertCntrAlgnTxt'
 
 const mapplsClassObject = new mappls()
 
 const MapView = () => {
     // map ref
     const map = useRef<any>(null)
-    const mapMarker = useRef<any>(null)
+    const mapMarkerRef = useRef<any>(null)
+
+    // state
+    const [isMapInitDone, setisMapInitDone] = useState(false)
 
     // hook
-    const { loading, lat, lng, error, errorMsg } = useGetLocationHook()
-    // const lat = 8.11357
-    // const lng = 77.403957
+    const queryClient = useQueryClient()
+    const { mode } = useGetmapAction()
 
     // query
-    const { data: user } = useQuery({
-        queryKey: [ME],
-        queryFn: () => null,
-        staleTime: Infinity
-    })
-
-    // const geoData = useMemo(
-    //     () => ({
-    //         type: 'FeatureCollection',
-    //         features: [
-    //             {
-    //                 type: 'Feature',
-    //                 properties: {
-    //                     icon: '/img/user-location-icon.png',
-    //                     'icon-size': 0.08
-    //                 },
-    //                 geometry: {
-    //                     type: 'Point',
-    //                     coordinates: [lat, lng]
-    //                 }
-    //             }
-    //         ]
-    //     }),
-    //     [lat, lng]
-    // )
+    const { user } = useQueryMe()
+    const { queryMapData, isError, isFetching, error, mrkrClckHndlr, mrkrDrgHndlr } = useQueryMap()
 
     // effect
     useEffect(() => {
-        if (lat && lng) {
+        if (queryMapData && user && !isError && !isFetching) {
+            const { lat, lng } = queryMapData.usrCurrLoc
             mapplsClassObject.initialize(import.meta.env.VITE_MAPPLS_KEY, { map: true }, () => {
                 if (map.current) {
                     map.current.remove()
@@ -61,45 +41,84 @@ const MapView = () => {
                     id: 'map',
                     properties: {
                         center: [lat, lng],
-                        icon: '/img/user-location-icon.png',
                         disableDoubleClickZoom: true,
                         zoomControl: false,
                         minZoom: 16,
                         tilt: 120
                     }
                 })
-                // mapplsClassObject.addGeoJson({
-                //     map: map.current,
-                //     data: geoData
-                // })
-                map.current.on('load', (data: any) => {
-                    // eslint-disable-next-line no-console
-                    console.log(data, 'data is here to check...')
+                map.current.on('load', () => {
+                    setisMapInitDone(true)
                 })
-                map.current.addListener('click', function () {})
+                // map.current.addListener('click', function () {})
                 map.current.addListener('dragend', function (e: any) {
                     // eslint-disable-next-line no-console
                     console.log(e, 'drag end is here...', e.target.getViewBounds())
                 })
-
-                // marker
-                mapMarker.current = mapplsClassObject.Marker({
-                    map: map.current,
-                    position: { lat, lng },
-                    fitBounds: true,
-                    draggable: true
-                })
-
-                mapMarker.current.addListener('dragend', function (e: any) {
-                    alert(JSON.stringify(e.target.getPosition()))
-                })
             })
         }
-    }, [lat, lng])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isFetching, isError, user])
+
+    const usrCurrLoc = queryMapData?.usrCurrLoc
+    const othrLoc = queryMapData?.remainLoc ?? []
+
+    useEffect(() => {
+        if (isMapInitDone && usrCurrLoc) {
+            const locations = [
+                {
+                    lat: Number(usrCurrLoc.lat),
+                    lng: Number(usrCurrLoc.lng),
+                    img: '/img/plce-hldr.png',
+                    currLocation: true,
+                    draggable: true,
+                    id: '1'
+                },
+                ...othrLoc
+            ]
+            // removing exist markers
+            const markersRefArr: any[] = []
+            if (Array.isArray(mapMarkerRef.current)) {
+                mapMarkerRef.current.forEach((m: any) => {
+                    m.remove()
+                })
+            }
+            // markers
+            locations.forEach(({ lat, lng, img, draggable, currLocation, id }) => {
+                const marker = mapplsClassObject.Marker({
+                    map: map.current,
+                    position: {
+                        lat,
+                        lng
+                    },
+                    fitBounds: true,
+                    draggable,
+                    html: `<div style="positon: relative">
+                            <img src="https://apis.mapmyindia.com/map_v3/1.png" alt="pin"/>
+                            <div class="bounce-float ${currLocation ? 'user-curr-location' : ''}">
+                                <img style="width: 34px; height: 34px;" src=${img} alt="pin" />
+                            </div>
+                        </div>`
+                })
+                // marker drag
+                marker.addListener('dragend', function (e: any) {
+                    const { lat, lng } = e.target.getPosition()
+                    mrkrDrgHndlr({ lat, lng, id })
+                })
+                // marker click
+                marker.addListener('click', function () {
+                    mrkrClckHndlr({ id })
+                })
+                markersRefArr.push(marker)
+            })
+            mapMarkerRef.current = markersRefArr
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMapInitDone, usrCurrLoc, queryClient, mode])
 
     if (!user) return <></>
 
-    if (loading)
+    if (isFetching)
         return (
             <VertCntrAlgnTxt
                 text={'Getting location...'}
@@ -107,10 +126,10 @@ const MapView = () => {
             />
         )
 
-    if (error)
+    if (isError)
         return (
             <VertCntrAlgnTxt
-                text={errorMsg}
+                text={error?.message ?? AN_ERROR_OCCURED}
                 sxOverrides={{ textAlign: 'center', p: 2 }}
             />
         )

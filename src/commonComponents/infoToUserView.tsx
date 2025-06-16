@@ -10,7 +10,7 @@ import WdthContnr from './wdthContnr'
 export default function InfoToUserView({ children }: ChildrenProp) {
     // hook
     const ref = useRef<HTMLDivElement>(null)
-    const { infoModalState, infoCloseHandler } = useInfoToUserViewMethods({ isFirstMount: true })
+    const { infoModalState, infoCloseHandler } = useInfoToUserViewMethods()
 
     // state
     const [size, setSize] = useState({ width: 0, height: 0 })
@@ -34,10 +34,14 @@ export default function InfoToUserView({ children }: ChildrenProp) {
 
     return (
         <WdthContnr>
-            <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <div
+                id="infoToUserView"
+                style={{ width: '100%', height: '100%', position: 'relative' }}
+            >
                 <div
                     ref={ref}
                     style={{ height: '100%' }}
+                    id="infoToUserViewChild"
                 >
                     {children}
                     <AnimatePresence>

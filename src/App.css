@@ -1,0 +1,23 @@
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px); /* bounce up */
+  }
+}
+
+.bounce-float {
+  animation: floatBounce 2s ease-in-out infinite;
+  position: absolute; 
+  top: -64px; 
+  left: -16px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+}
+
+.user-curr-location {
+  border: solid 3px green
+}

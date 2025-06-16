@@ -1,5 +1,5 @@
 import { ERROR_VARIANT_MODAL, INFO_VARIANT_MODAL, SUCCESS_VARIANT_MODAL } from '@/const/infoModalConsts'
-import { INFO_MODAL_QUERY } from '@/const/reactQuery'
+import { INFO_MODAL_QUERY } from '@/const/query'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 export type InfoVariant = typeof INFO_VARIANT_MODAL | typeof SUCCESS_VARIANT_MODAL | typeof ERROR_VARIANT_MODAL
@@ -8,11 +8,8 @@ export type InfoModalType = {
     variant: InfoVariant
     msg: string
 }
-type EnabledType = {
-    isFirstMount: boolean
-}
 
-const useInfoToUserViewMethods = ({ isFirstMount }: EnabledType) => {
+const useInfoToUserViewMethods = () => {
     // query
     const queryClient = useQueryClient()
     const { data: infoModalState } = useQuery<InfoModalType>({
@@ -22,8 +19,7 @@ const useInfoToUserViewMethods = ({ isFirstMount }: EnabledType) => {
             variant: INFO_VARIANT_MODAL,
             msg: ''
         }),
-        enabled: isFirstMount,
-        refetchOnWindowFocus: false
+        staleTime: Infinity
     })
 
     // handler

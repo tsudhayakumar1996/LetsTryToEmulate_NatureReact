@@ -1,16 +1,8 @@
-import AnimatePageLayout from '@/animatePageLayout'
-import VertCentContnr from '@/commonComponents/vertCentContnr'
+import VertCntrAlgnTxt from '@/commonComponents/vertCntrAlgnTxt'
 import { AN_ERROR_OCCURED } from '@/const/msg'
-import { HeaderOneVarientTypo } from '@/typography'
 
 const Error = () => {
-    return (
-        <AnimatePageLayout>
-            <VertCentContnr>
-                <HeaderOneVarientTypo text={AN_ERROR_OCCURED} />
-            </VertCentContnr>
-        </AnimatePageLayout>
-    )
+    return <VertCntrAlgnTxt text={AN_ERROR_OCCURED} />
 }
 
 export default Error

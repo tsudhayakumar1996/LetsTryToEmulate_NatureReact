@@ -10,10 +10,7 @@ import { useEffect, useState } from 'react'
 
 const useGetLocationHook = () => {
     // state
-    const [location, setlocation] = useState<LocationType>({
-        lat: null,
-        lng: null
-    })
+    const [location, setlocation] = useState<LocationType>()
     const [loadingOrError, setloadingOrError] = useState({
         loading: false,
         error: false,

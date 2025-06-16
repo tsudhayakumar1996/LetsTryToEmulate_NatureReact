@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { Outlet } from 'react-router'
 
-import TxtAlgnCenterContnr from '@/commonComponents/txtAlgnCenterContnr'
+import CenterContnr from '@/commonComponents/cntrAlgnContnr'
 import VertCentContnr from '@/commonComponents/vertCentContnr'
 import WhteBgWthPosndImgContnr from '@/commonComponents/whteBgWthPosndImgContnr'
 
@@ -10,9 +10,9 @@ const AthFrmsContnr = () => {
         <VertCentContnr>
             <Box sx={{ width: { xs: '100%', sm: '400px' }, m: 2 }}>
                 <WhteBgWthPosndImgContnr>
-                    <TxtAlgnCenterContnr>
+                    <CenterContnr>
                         <Outlet />
-                    </TxtAlgnCenterContnr>
+                    </CenterContnr>
                 </WhteBgWthPosndImgContnr>
             </Box>
         </VertCentContnr>

@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 
+import '@/App.css'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { RouterProvider } from 'react-router'
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import VertCentCircPrgs from '@/commonComponents/vertCentCircPrgs'
@@ -11,6 +11,7 @@ import { AUTH_UI_ROUTES, HOME_UI_ROUTE, LOGIN_UI_ROUTE, PROTECTED_ROUTES } from 
 import { getApi } from '@/fetch'
 import { ChildrenProp } from '@/types/common'
 import { enqueSnackBarError } from '@/utils/helper'
+import { useQueryMe } from './queryClientMethods/useQueryMe'
 
 const AuthGuard = ({ children }: ChildrenProp) => {
     // queryclient
@@ -23,11 +24,7 @@ const AuthGuard = ({ children }: ChildrenProp) => {
     const returnTo = searchParams.get('returnTo')
 
     // query
-    const { data: user } = useQuery({
-        queryKey: [ME],
-        queryFn: () => null,
-        staleTime: Infinity
-    })
+    const { user } = useQueryMe()
 
     // const
     const isUserInLandPage = pathname === '/'

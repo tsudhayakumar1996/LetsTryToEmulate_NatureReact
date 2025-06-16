@@ -18,12 +18,14 @@ import { useNavigate } from 'react-router'
 const ParrlxContnt = () => {
     // ref
     const itemsRef: any = useRef([])
+
     // hook
     const navigate = useNavigate()
 
     // query
     const queryClient = useQueryClient()
 
+    // hlpr
     const scrollHandler = (cJ: CJProps) => {
         if (cJ.actionFor === 'redirect') {
             navigate(cJ.redirectURL)

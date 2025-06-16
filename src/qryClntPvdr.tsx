@@ -10,7 +10,10 @@ const QryClntPvdr = ({ children }: ChildrenProp) => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools initialIsOpen={false} />
+            <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="top-left"
+            />
             <InfoToUserView>{children}</InfoToUserView>
         </QueryClientProvider>
     )

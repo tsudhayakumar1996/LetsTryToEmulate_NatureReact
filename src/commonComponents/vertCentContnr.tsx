@@ -9,6 +9,7 @@ const VertCentContnr = ({ children }: ChildrenProp) => {
             display="flex"
             height="100%"
             justifyContent="center"
+            id="vertCntrAlgnContrn"
         >
             {children}
         </Box>
