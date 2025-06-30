@@ -38,8 +38,8 @@ const InfoViewToUsr = () => {
                         </ListItem>{' '}
                         <ListItem>
                             {' '}
-                            We’ve locked the map for better precision — but hey, GPS isn’t always perfect. Sometimes it
-                            shows you chilling miles away from where you actually are. 🤷‍♂️{' '}
+                            GPS isn’t always perfect. Sometimes it shows you chilling miles away from where you actually
+                            are. 🤷‍♂️{' '}
                         </ListItem>{' '}
                         <ListItem sx={{ pb: 0 }}>
                             {' '}
@@ -56,8 +56,16 @@ const InfoViewToUsr = () => {
                         </ListItem>{' '}
                         <ListItem>
                             {' '}
-                            Once your location’s good to go, hit the ➕ to upload a photo of the place. Snap it, tag it,
-                            and you’re ready to create a new spot! 📸✨{' '}
+                            Once your location’s good to go, hit the{' '}
+                            <img
+                                src="https://apis.mappls.com/map_v3/1.png"
+                                alt="pin"
+                                style={{ width: '20px', marginLeft: '5px' }}
+                            />
+                        </ListItem>{' '}
+                        <ListItem sx={{ pt: 0 }}>
+                            to upload a photo of the place. Snap it, tag it, and you’re ready to create a new spot!
+                            📸✨{' '}
                         </ListItem>{' '}
                         <ListItem>
                             {' '}

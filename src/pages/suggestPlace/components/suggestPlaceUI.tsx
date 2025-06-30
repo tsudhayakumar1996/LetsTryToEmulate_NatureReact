@@ -1,13 +1,14 @@
-import CmnIcnBtn from '@/commonComponents/cmnIcnBtn'
 import CmnModal from '@/commonComponents/cmnModal'
-import CmrComp from '@/commonComponents/cmrComp'
+import TkeImgComp from '@/commonComponents/tkeImgComp'
+import { FILE_UPLOAD } from '@/const/apiEndPnts'
+import { filePostApi } from '@/fetch'
 import useQueryMap from '@/queryClientMethods/useQuerySuggestPlace'
 import { useEffect, useState } from 'react'
 
 const SuggestPlaceUI = () => {
     // state
     const [showCam, setshowCam] = useState(false)
-    const [photo, setphoto] = useState<Base64URLString>()
+    const [photo, setphoto] = useState<File | undefined>(undefined)
 
     // qry
     const { queryMapData } = useQueryMap()
@@ -21,29 +22,34 @@ const SuggestPlaceUI = () => {
         }
     }, [renderId, usrAction])
 
-    // eslint-disable-next-line no-console
-    console.log(photo, 'photo is here')
+    // hndlr
+    const imgUpldHndlr = () => {
+        if (photo) {
+            // eslint-disable-next-line no-console
+            console.log(photo, 'photot is here....')
+            filePostApi({
+                endUrl: FILE_UPLOAD,
+                file: photo
+            })
+        }
+    }
+
+    const suggestPlceAction = () => {
+        imgUpldHndlr()
+    }
 
     return (
         <>
-            <CmnIcnBtn
-                sx={{
-                    position: 'absolute',
-                    bottom: 245,
-                    right: 20
-                }}
-                onClick={() => setshowCam((prev) => !prev)}
-            >
-                📷
-            </CmnIcnBtn>
             {/* cam modal */}
             <CmnModal
                 open={showCam}
                 onClose={() => setshowCam(false)}
             >
-                <CmrComp
-                    setphoto={setphoto}
+                <TkeImgComp
                     onClose={() => setshowCam(false)}
+                    setphoto={setphoto}
+                    photo={photo}
+                    suggestPlceAction={suggestPlceAction}
                 />
             </CmnModal>
         </>

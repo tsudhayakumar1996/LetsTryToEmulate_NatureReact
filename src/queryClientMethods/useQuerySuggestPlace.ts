@@ -1,5 +1,4 @@
 import { MAP_ACTION } from '@/const/query'
-import { getCurrentLocation } from '@/helper/getLocation'
 import { LocationType } from '@/types/common'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import useGetmapAction from './useGetmapAction'
@@ -42,13 +41,13 @@ const useQueryMap = () => {
     } = useQuery<UseQueryProp>({
         queryKey: [MAP_ACTION],
         queryFn: async () => {
-            // const lat = 8.11357
-            // const lng = 77.403957
+            const lat = 8.11357
+            const lng = 77.403957
             const showModal = false
             const id = ''
             const action = ''
             const renderId = Math.random()
-            const { lat, lng } = await getCurrentLocation()
+            // const { lat, lng } = await getCurrentLocation()
             return {
                 usrCurrLoc: { lat, lng },
                 actnDneOnMrkrState: { mode, showModal, id, action, renderId },

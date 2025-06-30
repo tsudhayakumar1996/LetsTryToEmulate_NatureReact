@@ -1,3 +1,4 @@
+import AnimatePageLayout from '@/animatePageLayout'
 import type { ModalProps } from '@mui/material'
 import { Backdrop, Box, Fade, Modal } from '@mui/material'
 
@@ -8,13 +9,13 @@ const CmnModal = ({ children, open, ...props }: ModalProps) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: { xs: '70%', lg: '40%' },
+        width: { xs: '80%', lg: '40%' },
         maxHeight: '80%',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         borderRadius: '10px',
         boxShadow: 24,
-        p: 4
+        p: { xs: 1, md: 4 }
     }
 
     return (
@@ -27,16 +28,12 @@ const CmnModal = ({ children, open, ...props }: ModalProps) => {
                     timeout: 500
                 }
             }}
-            sx={{
-                '&.MuiModal-root .MuiModal-backdrop': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                    backdropFilter: 'blur(8px)'
-                }
-            }}
             {...props}
         >
             <Fade in={open}>
-                <Box sx={style}>{children}</Box>
+                <Box sx={style}>
+                    <AnimatePageLayout>{children}</AnimatePageLayout>
+                </Box>
             </Fade>
         </Modal>
     )

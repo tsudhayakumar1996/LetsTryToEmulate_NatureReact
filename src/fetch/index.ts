@@ -47,3 +47,18 @@ export const postApi = async ({ endUrl, reqObj }: APIReqProp & EndUrlProp) => {
         throw resErrorHandler(err)
     }
 }
+
+export const filePostApi = async ({ endUrl, file }: { file: File } & EndUrlProp) => {
+    try {
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${baseUrl}${endUrl}`, {
+            method: POST,
+            body: formData,
+            credentials: 'include'
+        })
+        return await resSuccessHandler(res)
+    } catch (err) {
+        throw resErrorHandler(err)
+    }
+}

@@ -22,3 +22,14 @@ export const PVarientTypo = ({ text, sxOverrides }: TypoProp) => {
         </Typography>
     )
 }
+
+export const CstmFntTypo = ({ text, sxOverrides }: TypoProp) => {
+    return (
+        <Typography
+            variant="body1"
+            sx={{ ...sxOverrides }}
+        >
+            {text}
+        </Typography>
+    )
+}

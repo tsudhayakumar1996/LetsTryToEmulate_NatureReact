@@ -19,7 +19,10 @@ const theme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundImage: 'url(/img/paper-blur.png)'
+                    backgroundImage: 'url(/img/paper-blur.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
                 }
             }
         },
@@ -29,6 +32,14 @@ const theme = createTheme({
                     '& .MuiInputBase-root': {
                         borderRadius: '1rem'
                     }
+                }
+            }
+        },
+        MuiBackdrop: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                    backdropFilter: 'blur(8px)'
                 }
             }
         }

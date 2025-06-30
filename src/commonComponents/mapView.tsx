@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { mappls } from 'mappls-web-maps'
 import { useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router'
+import CmnIcnBtn from './cmnIcnBtn'
 
 const mapplsClassObject = new mappls()
 
@@ -116,6 +117,15 @@ const MapView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMapInitDone, usrCurrLoc, queryClient, mode])
 
+    // hndlr
+    const setCntrHndlr = () => {
+        if (queryMapData) {
+            const { lat, lng } = queryMapData.usrCurrLoc
+            map.current.setCenter({ lat, lng })
+            map.current.setZoom(12)
+        }
+    }
+
     if (!user) return <></>
 
     if (isFetching)
@@ -141,6 +151,17 @@ const MapView = () => {
                 style={{ width: '100%', height: '100vh' }}
             />
             <AnimatePageLayout>
+                {/* re cntr map */}
+                <CmnIcnBtn
+                    sx={{
+                        position: 'absolute',
+                        bottom: 320,
+                        right: 20
+                    }}
+                    onClick={setCntrHndlr}
+                >
+                    🙋🏼‍♂️
+                </CmnIcnBtn>
                 <Outlet />
             </AnimatePageLayout>
         </Box>
